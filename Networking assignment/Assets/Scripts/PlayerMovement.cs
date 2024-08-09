@@ -12,8 +12,8 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private float speed = 5;
     //private Vector2 moveDir;
-    private NetworkVariable<Vector2> moveDir = new NetworkVariable<Vector2>(writePerm: NetworkVariableWritePermission.Owner);
-    private NetworkVariable<Vector2> mousePos = new NetworkVariable<Vector2>(writePerm: NetworkVariableWritePermission.Owner);
+    private NetworkVariable<Vector2> moveDir = new NetworkVariable<Vector2>(readPerm: NetworkVariableReadPermission.Everyone, writePerm: NetworkVariableWritePermission.Owner);
+    private NetworkVariable<Vector2> mousePos = new NetworkVariable<Vector2>(readPerm: NetworkVariableReadPermission.Everyone, writePerm: NetworkVariableWritePermission.Owner);
     private Gun gun;
     void Start()
     {
@@ -21,17 +21,6 @@ public class PlayerMovement : NetworkBehaviour
         {
             rb = GetComponent<Rigidbody2D>();
             gun = GetComponentInChildren<Gun>();
-
-            if (rb == false)
-            {
-                Debug.LogError("Player did not have a rigidbody.");
-            }
-
-            if (gun == false)
-            {
-                Debug.LogError("Player did not have a gun.");
-            }   
-            Debug.Log("Hello");
         }
         
     }
@@ -43,34 +32,38 @@ public class PlayerMovement : NetworkBehaviour
             float moveX = Input.GetAxisRaw("Horizontal");
             float moveY = Input.GetAxisRaw("Vertical");
             moveDir = new NetworkVariable<Vector2>( new Vector2(moveX, moveY).normalized * speed);
+            UpdateVelocityRPC(moveDir.Value);
             mousePos.Value = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-           // Debug.Log(OwnerClientId+ ":" +moveDir.Value.x);
-           // Debug.Log(OwnerClientId+ ":" +moveDir.Value.y);
-
-           /*
+         
+            NetworkVariable<Vector2> aimDir = new NetworkVariable<Vector2>(mousePos.Value - rb.position);
+            NetworkVariable<float> aimAngle = new NetworkVariable<float>(Mathf.Atan2(aimDir.Value.y, aimDir.Value.x) * Mathf.Rad2Deg - 90f);
+            UpdateRotationRPC(aimAngle.Value);
+           
             if (Input.GetKeyDown(KeyCode.Mouse0) && gun)
             {
                 gun.Fire();
             }  
-            */ 
+            
         }
     }
 
     private void FixedUpdate()
     {
-        if (rb)
-        {
-            rb.velocity = new Vector2(moveDir.Value.x, moveDir.Value.y);
-        }
         if (IsLocalPlayer)
         {
-            NetworkVariable<Vector2> aimDir = new NetworkVariable<Vector2>(mousePos.Value - rb.position);
-            //Vector2 aimDir = mousePos.Value - rb.position;
-            NetworkVariable<float> aimAngle = new NetworkVariable<float>(Mathf.Atan2(aimDir.Value.y, aimDir.Value.x) * Mathf.Rad2Deg - 90f);
-            //float aimAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg - 90f;
-            rb.rotation = aimAngle.Value; 
-            //Debug.LogError(aimAngle.Value);
-            Debug.LogError(rb.rotation);
+            
         }
+    }
+
+    [Rpc(SendTo.Server)]
+    private void UpdateVelocityRPC(Vector2 data)
+    {
+        rb.velocity = data;
+    }
+    
+    [Rpc(SendTo.Server)]
+    private void UpdateRotationRPC(float data)
+    {
+        rb.rotation = data;
     }
 }
