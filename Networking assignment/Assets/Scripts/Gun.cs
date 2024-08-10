@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Gun : MonoBehaviour
+public class Gun : NetworkBehaviour
 {
    public GameObject bulletPrefab;
    public Transform firePoint;
@@ -11,9 +11,12 @@ public class Gun : MonoBehaviour
 
    public void Fire()
    {
-      SpawnBulletRPC();
-      //GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-      //bullet.GetComponent<Rigidbody2D>().AddForce(firePoint.up * fireForce, ForceMode2D.Impulse);
+      if (IsLocalPlayer)
+      {
+         SpawnBulletRPC();
+         //GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+         //bullet.GetComponent<Rigidbody2D>().AddForce(firePoint.up * fireForce, ForceMode2D.Impulse);  
+      }
    }
 
    [Rpc(SendTo.Server)]
