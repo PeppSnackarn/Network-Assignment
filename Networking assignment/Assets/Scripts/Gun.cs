@@ -7,15 +7,12 @@ public class Gun : NetworkBehaviour
 {
    public GameObject bulletPrefab;
    public Transform firePoint;
-   [SerializeField] private float fireForce = 20;
 
    public void Fire()
    {
       if (IsLocalPlayer)
       {
          SpawnBulletRPC();
-         //GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-         //bullet.GetComponent<Rigidbody2D>().AddForce(firePoint.up * fireForce, ForceMode2D.Impulse);  
       }
    }
 
@@ -24,6 +21,5 @@ public class Gun : NetworkBehaviour
    {
       NetworkObject ob = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation).GetComponent<NetworkObject>();
       ob.Spawn();
-      ob.GetComponent<Rigidbody2D>().AddForce(firePoint.up * fireForce, ForceMode2D.Impulse);
    }
 }
