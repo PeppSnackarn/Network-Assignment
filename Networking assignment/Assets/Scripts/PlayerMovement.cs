@@ -42,16 +42,7 @@ public class PlayerMovement : NetworkBehaviour
             if (Input.GetKeyDown(KeyCode.Mouse0) && gun)
             {
                 gun.Fire();
-            }  
-            
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (IsLocalPlayer)
-        {
-            
+            }
         }
     }
 

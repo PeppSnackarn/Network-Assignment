@@ -18,7 +18,7 @@ public class Bullet : NetworkBehaviour
             health.TakeDamage(Damage);
             Debug.Log("Damage player");
         }
-        DestroyBulletRPC();
+        DestroyRPC();
     }
 
     private void Update()
@@ -37,9 +37,9 @@ public class Bullet : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    private void DestroyBulletRPC()
+    private void DestroyRPC()
     {
-        Destroy(gameObject);
+        NetworkObject.Despawn();
     }
     
 }
