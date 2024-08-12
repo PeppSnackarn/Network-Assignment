@@ -18,7 +18,15 @@ public class Bullet : NetworkBehaviour
             health.TakeDamage(Damage);
             Debug.Log("Damage player");
         }
-        Destroy(gameObject);
+        DestroyBulletRPC();
+    }
+
+    private void Update()
+    {
+        foreach (Collider collider in Physics.OverlapSphere(transform.position, 10))
+        {
+          Debug.Log(collider.gameObject);  
+        }
     }
 
     public override void OnNetworkSpawn()
@@ -26,6 +34,12 @@ public class Bullet : NetworkBehaviour
         Rigidbody2D rb;
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = transform.up * Force;
+    }
+
+    [Rpc(SendTo.Server)]
+    private void DestroyBulletRPC()
+    {
+        Destroy(gameObject);
     }
     
 }
