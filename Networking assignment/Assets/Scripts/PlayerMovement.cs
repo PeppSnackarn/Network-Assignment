@@ -43,6 +43,24 @@ public class PlayerMovement : NetworkBehaviour
             {
                 gun.Fire();
             }
+
+            //Hello chat message
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                Chat.instance.SubmittChatRPC("Hello!", OwnerClientId + 1);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                Chat.instance.SubmittChatRPC("Nice shot!", OwnerClientId + 1);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                Chat.instance.SubmittChatRPC("Wow!", OwnerClientId + 1);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                Chat.instance.SubmittChatRPC("Thanks!", OwnerClientId + 1);
+            }
         }
     }
 
