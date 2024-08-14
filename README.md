@@ -1,7 +1,7 @@
 # Network Assignment
  Network course assignment
 
- # Instructions
+# Instructions
 Objective: The goal of this assignment is to create a simple networked game using Unity's Netcode for GameObjects (NGO). The project will involve setting up a client-server architecture, implementing basic synchronization, and ensuring stable replication of game objects.
 
 Requirements:
@@ -79,3 +79,11 @@ Documentation:
 Document the development process.
 
 Include explanations of how synchronization, server authority, and optimizations were implemented.
+
+# Contents
+A simple pvp top down shooter in 2D. 
+
+Client-server model with server authority movement & shooting.
+
+Simple chat system for the players to interact with each other.
+
