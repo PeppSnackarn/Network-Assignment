@@ -50,7 +50,7 @@ Player Movement Synchronization:
 
 Create a player prefab with a NetworkObject component.
 
-Implement a basic movement script that uses Unity’s Input system.
+Implement a basic movement script that uses Unityâ€™s Input system.
 
 Synchronize player movement across the network using NetworkTransform or a custom script.
 
@@ -86,4 +86,6 @@ A simple pvp top down shooter in 2D.
 Client-server model with server authority movement & shooting.
 
 Simple chat system for the players to interact with each other.
+
+The build for the project is inside the "Tempbuild" folder.
 
